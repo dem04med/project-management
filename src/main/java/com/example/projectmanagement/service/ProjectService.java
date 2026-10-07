@@ -14,13 +14,14 @@ import java.util.List;
 @Service
 public class ProjectService {
     private final List<Project> projects = new ArrayList<>();
+    private long nextId = 1; //O nextId representa o novo id a ser atribuído a um projeto
 
     public List<Project> getAllProjects(){
         return List.copyOf(projects);
     }
 
     public Project createProject(CreateProjectRequest request){
-        long id = projects.size();
+        long id = nextId++;
 
         Project project = new Project(
                 id,
