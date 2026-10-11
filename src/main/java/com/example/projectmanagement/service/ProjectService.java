@@ -77,4 +77,9 @@ public class ProjectService {
 
         return project;
     }
+
+    public void deleteProject(Long id){
+        Project project = getProjectById(id);
+        projects.remove(project);
+    }
 }

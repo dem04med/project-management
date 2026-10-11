@@ -44,4 +44,9 @@ public class ProjectController {
     public Project patchProject(@PathVariable Long id, @RequestBody PatchProjectRequest request){
         return projectService.patchProject(id, request);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteProject(@PathVariable Long id){
+        projectService.deleteProject(id);
+    }
 }
