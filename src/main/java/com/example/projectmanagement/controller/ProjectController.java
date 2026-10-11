@@ -6,6 +6,7 @@ import com.example.projectmanagement.dto.UpdateProjectRequest;
 import com.example.projectmanagement.model.Project;
 import com.example.projectmanagement.service.ProjectService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +47,8 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable Long id){
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id){
         projectService.deleteProject(id);
+        return ResponseEntity.noContent().build();
     }
 }
