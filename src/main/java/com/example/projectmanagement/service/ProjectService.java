@@ -5,40 +5,35 @@ import com.example.projectmanagement.dto.PatchProjectRequest;
 import com.example.projectmanagement.dto.UpdateProjectRequest;
 import com.example.projectmanagement.exception.ProjectNotFoundException;
 import com.example.projectmanagement.model.Project;
-import com.example.projectmanagement.model.ProjectStatus;
+import com.example.projectmanagement.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProjectService {
-    private final List<Project> projects = new ArrayList<>();
-    private long nextId = 1; //O nextId representa o novo id a ser atribuído a um projeto
+    private final ProjectRepository projectRepository;
+
+    public ProjectService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
 
     public List<Project> getAllProjects(){
-        return List.copyOf(projects);
+        return projectRepository.findAll();
     }
 
     public Project createProject(CreateProjectRequest request){
-        long id = nextId++;
-
         Project project = new Project(
-                id,
                 request.getName(),
                 request.getDescription(),
                 request.getStatus()
         );
 
-        projects.add(project);
-
-        return project;
+        return projectRepository.save(project);
     }
 
     public Project getProjectById(Long id){
-        return projects.stream()
-                .filter(project -> project.getId().equals(id))
-                .findFirst()
+        return projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException(id));
     }
 
@@ -49,7 +44,7 @@ public class ProjectService {
         project.setDescription(request.getDescription());
         project.setStatus(request.getStatus());
 
-        return project;
+        return projectRepository.save(project);
     }
 
     public Project patchProject(Long id, PatchProjectRequest request){
@@ -75,11 +70,11 @@ public class ProjectService {
             project.setStatus(request.getStatus());
         }
 
-        return project;
+        return projectRepository.save(project);
     }
 
     public void deleteProject(Long id){
         Project project = getProjectById(id);
-        projects.remove(project);
+        projectRepository.delete(project);
     }
 }
