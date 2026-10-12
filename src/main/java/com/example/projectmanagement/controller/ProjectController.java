@@ -6,9 +6,11 @@ import com.example.projectmanagement.dto.UpdateProjectRequest;
 import com.example.projectmanagement.model.Project;
 import com.example.projectmanagement.service.ProjectService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,8 +29,14 @@ public class ProjectController {
     }
 
     @PostMapping
-    public Project createProject(@Valid @RequestBody CreateProjectRequest request){
-        return projectService.createProject(request);
+    public ResponseEntity<Project> createProject(@Valid @RequestBody CreateProjectRequest request){
+        Project createdProject = projectService.createProject(request);
+
+        URI location = URI.create("/api/projects/" + createdProject.getId());
+
+        return ResponseEntity
+                .created(location) //apresenta a localização do projeto criado e define o HTTP Status para 201 Created
+                .body(createdProject);
     }
 
     @GetMapping("/{id}")
@@ -42,7 +50,7 @@ public class ProjectController {
     }
 
     @PatchMapping("/{id}")
-    public Project patchProject(@PathVariable Long id, @RequestBody PatchProjectRequest request){
+    public Project patchProject(@PathVariable Long id, @Valid @RequestBody PatchProjectRequest request){
         return projectService.patchProject(id, request);
     }
 

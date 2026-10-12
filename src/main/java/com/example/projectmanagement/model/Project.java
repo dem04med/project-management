@@ -1,8 +1,5 @@
 package com.example.projectmanagement.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Project {
@@ -10,8 +7,15 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(nullable = false, length = 1000)
     private String description;
+
+    @Enumerated(EnumType.STRING)  //Na base de dados são armazenadas strings em vez de numeros
+    @Column(nullable = false, length = 20)
     private ProjectStatus status;
 
     //CONSTRUCTORS

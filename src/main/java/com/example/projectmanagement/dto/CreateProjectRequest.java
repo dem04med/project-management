@@ -3,13 +3,16 @@ package com.example.projectmanagement.dto;
 import com.example.projectmanagement.model.ProjectStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class CreateProjectRequest {
 
     @NotBlank(message = "O nome é obrigatório")
+    @Size(max = 100, message = "O nome não pode exceder os 100 caracteres")
     private String name;
 
     @NotBlank(message = "A descrição é obrigatória")
+    @Size(max = 1000, message = "A descrição não pode exceder os 1000 caracteres")
     private String description;
 
     @NotNull(message = "O estado é obrigatório")
